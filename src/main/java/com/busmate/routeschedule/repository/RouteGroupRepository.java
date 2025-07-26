@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface RouteGroupRepository extends JpaRepository<RouteGroup, UUID> {
     boolean existsByName(String name);
+    boolean existsByRouteCode(String routeCode);
 }

@@ -13,11 +13,17 @@ public class RouteGroupRequest {
 
     private String description;
 
+    @NotBlank(message = "Route code is mandatory")
+    private String routeCode;
+
+    @NotBlank(message = "Road type is mandatory")
+    private String roadType;
+
     private List<RouteRequest> routes;
 
     @Data
     public static class RouteRequest {
-        private UUID id; // Changed to UUID
+        private UUID id;
         
         @NotBlank(message = "Name is mandatory")
         private String name;
@@ -41,7 +47,7 @@ public class RouteGroupRequest {
 
         @Data
         public static class RouteStopRequest {
-            private UUID id; // Changed to UUID
+            private UUID id;
             
             @NotNull(message = "Stop ID is mandatory")
             private UUID stopId;

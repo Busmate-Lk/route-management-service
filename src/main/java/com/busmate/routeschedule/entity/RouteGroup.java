@@ -1,5 +1,6 @@
 package com.busmate.routeschedule.entity;
 
+import com.busmate.routeschedule.enums.RoadTypeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -19,6 +20,13 @@ public class RouteGroup extends BaseEntity {
 
     @Column
     private String description;
+
+    @Column(nullable = false, unique = true)
+    private String routeCode;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RoadTypeEnum roadType;
 
     @OneToMany(mappedBy = "routeGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Route> routes;

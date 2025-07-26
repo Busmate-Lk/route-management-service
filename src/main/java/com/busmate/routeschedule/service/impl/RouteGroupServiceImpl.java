@@ -8,6 +8,7 @@ import com.busmate.routeschedule.entity.RouteGroup;
 import com.busmate.routeschedule.entity.RouteStop;
 import com.busmate.routeschedule.entity.Stop;
 import com.busmate.routeschedule.enums.DirectionEnum;
+import com.busmate.routeschedule.enums.RoadTypeEnum;
 import com.busmate.routeschedule.exception.ConflictException;
 import com.busmate.routeschedule.exception.ResourceNotFoundException;
 import com.busmate.routeschedule.repository.RouteGroupRepository;
@@ -41,10 +42,19 @@ public class RouteGroupServiceImpl implements RouteGroupService {
         if (routeGroupRepository.existsByName(request.getName())) {
             throw new ConflictException("Route group with name " + request.getName() + " already exists");
         }
+        if (routeGroupRepository.existsByRouteCode(request.getRouteCode())) {
+            throw new ConflictException("Route group with code " + request.getRouteCode() + " already exists");
+        }
 
         RouteGroup routeGroup = new RouteGroup();
         routeGroup.setName(request.getName());
         routeGroup.setDescription(request.getDescription());
+        routeGroup.setRouteCode(request.getRouteCode());
+        try {
+            routeGroup.setRoadType(RoadTypeEnum.valueOf(request.getRoadType()));
+        } catch (IllegalArgumentException e) {
+            throw new ConflictException("Invalid road type: " + request.getRoadType());
+        }
         routeGroup.setCreatedBy(userId);
         routeGroup.setUpdatedBy(userId);
 
@@ -116,9 +126,19 @@ public class RouteGroupServiceImpl implements RouteGroupService {
                 routeGroupRepository.existsByName(request.getName())) {
             throw new ConflictException("Route group with name " + request.getName() + " already exists");
         }
+        if (!routeGroup.getRouteCode().equals(request.getRouteCode()) &&
+                routeGroupRepository.existsByRouteCode(request.getRouteCode())) {
+            throw new ConflictException("Route group with code " + request.getRouteCode() + " already exists");
+        }
 
         routeGroup.setName(request.getName());
         routeGroup.setDescription(request.getDescription());
+        routeGroup.setRouteCode(request.getRouteCode());
+        try {
+            routeGroup.setRoadType(RoadTypeEnum.valueOf(request.getRoadType()));
+        } catch (IllegalArgumentException e) {
+            throw new ConflictException("Invalid road type: " + request.getRoadType());
+        }
         routeGroup.setUpdatedBy(userId);
 
         if (request.getRoutes() != null) {
