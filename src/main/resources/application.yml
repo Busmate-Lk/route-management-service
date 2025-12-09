@@ -53,8 +53,8 @@ spring:
   jpa:
     hibernate:
       # Change to update to avoid connection issues on startup
-      # ddl-auto: update
-      ddl-auto: create  # Only use during development reset
+      ddl-auto: update
+      # ddl-auto: create  # Only use during development reset
     show-sql: false  # SQL logging disabled
     properties:
       hibernate:
