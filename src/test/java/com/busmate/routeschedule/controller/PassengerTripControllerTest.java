@@ -5,10 +5,14 @@ import com.busmate.routeschedule.passenger.dto.response.PassengerTripResponse;
 import com.busmate.routeschedule.passenger.dto.response.PassengerPaginatedResponse;
 import com.busmate.routeschedule.enums.OperatorTypeEnum;
 import com.busmate.routeschedule.enums.TripStatusEnum;
+import com.busmate.routeschedule.passenger.service.PassengerRouteService;
+import com.busmate.routeschedule.passenger.service.PassengerStopService;
 import com.busmate.routeschedule.passenger.service.PassengerTripService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
@@ -33,11 +37,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test class to verify the fixed PassengerController trip APIs
  * Tests all the critical filtering functionality that was previously missing
  */
-@WebMvcTest(PassengerController.class)
+@WebMvcTest(value = PassengerController.class,
+        excludeAutoConfiguration = {SecurityAutoConfiguration.class, SecurityFilterAutoConfiguration.class})
 class PassengerTripControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private PassengerRouteService passengerRouteService;
+
+    @MockBean
+    private PassengerStopService passengerStopService;
 
     @MockBean
     private PassengerTripService passengerTripService;
