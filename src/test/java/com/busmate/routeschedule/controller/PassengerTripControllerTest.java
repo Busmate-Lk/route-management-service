@@ -5,6 +5,8 @@ import com.busmate.routeschedule.passenger.dto.response.PassengerTripResponse;
 import com.busmate.routeschedule.passenger.dto.response.PassengerPaginatedResponse;
 import com.busmate.routeschedule.enums.OperatorTypeEnum;
 import com.busmate.routeschedule.enums.TripStatusEnum;
+import com.busmate.routeschedule.passenger.service.PassengerRouteService;
+import com.busmate.routeschedule.passenger.service.PassengerStopService;
 import com.busmate.routeschedule.passenger.service.PassengerTripService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -34,10 +37,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Tests all the critical filtering functionality that was previously missing
  */
 @WebMvcTest(PassengerController.class)
+@WithMockUser
 class PassengerTripControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private PassengerRouteService passengerRouteService;
+
+    @MockBean
+    private PassengerStopService passengerStopService;
 
     @MockBean
     private PassengerTripService passengerTripService;
